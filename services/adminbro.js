@@ -14,7 +14,7 @@ fs.readdirSync(normalizedPath).forEach((file) => {
   schemas.push(require(`${relativePath}/${file}`));
 });
 
-module.exports = () => {
+exports.setup = () => {
   // Set up adminbro
   AdminBro.registerAdapter(AdminBroMongoose);
   const adminBro = new AdminBro({

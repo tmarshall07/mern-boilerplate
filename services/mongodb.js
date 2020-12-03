@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const DATABASE_NAME = 'mydatabase';
 const MONGO_ATLAS_URL = 'cluster0-eyqdb.mongodb.net';
 
-module.exports = () => {
+exports.setup = () => {
   // MongoDB route
   const dbRoute =
     process.env.NODE_ENV === 'dev'

@@ -9,22 +9,21 @@ const passport = require('passport');
 const path = require('path');
 const MongoStore = require('connect-mongo')(session);
 
-const registerStrategies = require('./services/registerStrategies');
-const setupAdminBro = require('./services/setupAdminBro');
 const routes = require('./routes');
-const setupMongodb = require('./services/setupMongodb');
-const setupPassport = require('./services/setupPassport');
+const adminbroService = require('./services/adminbro');
+const mongodbService = require('./services/mongodb');
+const passportService = require('./services/passport');
 
 const app = express();
 
 // Set up adminbro
-const { adminBro, adminBroRouter } = setupAdminBro();
+const { adminBro, adminBroRouter } = adminbroService.setup();
 
 // Set up mongodb
-const { dbRoute } = setupMongodb();
+const { dbRoute } = mongodbService.setup();
 
 // Set up passport
-setupPassport(passport);
+passportService.initialize(passport);
 
 // Use adminbro
 app.use(adminBro.options.rootPath, adminBroRouter);
@@ -51,11 +50,10 @@ app.use(
 );
 
 // Passport setup
-app.use(passport.initialize());
-app.use(passport.session());
+passportService.setup(app, passport);
 
 // Register all passport strategies
-registerStrategies(passport);
+passportService.registerStrategies(passport);
 
 // Use static build dir if in production
 if (process.env.NODE_ENV === 'production') {
