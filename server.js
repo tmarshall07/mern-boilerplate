@@ -1,6 +1,6 @@
 require('dotenv').config({ path: `${__dirname}/.env` });
-const express = require('express');
 
+const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
@@ -8,28 +8,23 @@ const cors = require('cors');
 const passport = require('passport');
 const path = require('path');
 const MongoStore = require('connect-mongo')(session);
+
 const registerStrategies = require('./services/registerStrategies');
 const setupAdminBro = require('./services/setupAdminBro');
-
 const routes = require('./routes');
-
-const mongo = require('./services/mongo');
+const setupMongodb = require('./services/setupMongodb');
+const setupPassport = require('./services/setupPassport');
 
 const app = express();
 
+// Set up adminbro
 const { adminBro, adminBroRouter } = setupAdminBro();
 
-// MongoDB route
-const dbRoute =
-  process.env.NODE_ENV === 'dev'
-    ? 'mongodb://localhost:27017/chowmeow'
-    : `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-eyqdb.mongodb.net/chowmeow`;
+// Set up mongodb
+const { dbRoute } = setupMongodb();
 
-// Setup mongodb
-mongo(dbRoute);
-
-// Configure passport
-require('./services/setupPassport')(passport);
+// Set up passport
+setupPassport(passport);
 
 // Use adminbro
 app.use(adminBro.options.rootPath, adminBroRouter);

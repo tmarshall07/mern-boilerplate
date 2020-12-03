@@ -1,17 +1,3 @@
-## `.env`
-A `.env` file should be added to the root of the repo, the variables are made available in `server.js`, and should at least include the following:
-```
-PORT=8080
-NODE_ENV=dev
-
-DB_USER={MONGO_DB_USER}
-DB_PASSWORD={MONGO_DB_PASSWORD}
-
-SESSION_SECRET={SOME_LONG_HASH}
-COOKIE_PASSWORD={SOME_LONG_HASH}
-```
-
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
